@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Search").click(function () {
+           
+            id = $("#EmployeeId").val()
+            url = "https://localhost:44331/api/employees/" + (id ? id : "")
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (jsondata) {
+
+                    var table = $("#Results tbody");
+                    table.empty();
+                    if (Array.isArray(jsondata)) {
+                        $.each(jsondata, function (idx, elem) {
+                            table.append("<tr><td>" + elem.name + "</td><td>" + elem.contractTypeName + "</td>   <td>" + elem.roleId + "</td>   <td>" + elem.roleName + "</td>   <td>" + elem.roleDescription + "</td>   <td>" + elem.hourlySalary + "</td>   <td>" + elem.monthlySalary + "</td>   <td>" + elem.annualSalary + "</td></tr>");
+                        });
+                    } else {
+                        table.append("<tr><td>" + jsondata.name + "</td><td>" + jsondata.contractTypeName + "</td>   <td>" + jsondata.roleId + "</td>   <td>" + jsondata.roleName + "</td>   <td>" + jsondata.roleDescription + "</td>   <td>" + jsondata.hourlySalary + "</td>   <td>" + jsondata.monthlySalary + "</td>   <td>" + jsondata.annualSalary + "</td></tr>");
+
+                    }
+                    $(".jumbotron").show()
+                }
+            })
+
+            return false;
+        })
+    })
+
+</script>
+
+<div class="jumbotron">
+    <h1>Employees Information</h1>
+    <label>Employee ID:</label>
+    <input type="text" id="EmployeeId" />
+    <button id="Search" value="Get Employees" class="btn btn-primary">Get Employees</button>
+</div>
+<div class="jumbotron" style="display:none;">
+    <table id="Results" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    name
+                </th>
+                <th>
+                    contract Type Name
+                </th>
+                <th>
+                    role Id
+                </th>
+                <th>
+                    role Name
+                </th>
+                <th>
+                    role Description
+                </th>
+                <th>
+                    hourly Salary
+                </th>
+                <th>
+                    monthly Salary
+                </th>
+                <th>
+                    Annual Salary
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
